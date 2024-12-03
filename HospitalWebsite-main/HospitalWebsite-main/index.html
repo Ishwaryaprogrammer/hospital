@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Website</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <!-- header section starts  -->
+
+    <header class="header">
+
+        <a href="https://github.com/LuqmanApriantoDarmawan" class="logo"> <i class="fas fa-heartbeat"></i>The Luminaries</a>
+
+        <nav class="navbar">
+            <a href="#home">home</a>
+            <a href="#services">Medical Image Diagnosing</a>
+            <a href="#about">Personalized Recommendation</a>
+            <a href="#doctors">Image Enhancement</a>
+            <a href="#book">Dashboard</a>
+            <a href="#review">review</a>
+            <a href="#blogs">blogs</a>
+        </nav>
+
+        <div id="menu-btn" class="fas fa-bars"></div>
+
+    </header>
+
+    <!-- header section ends -->
+
+    <!-- home section starts  -->
+
+    <section class="home" id="home">
+
+        <div class="image">
+            <img src="image/home-img.svg" alt="">
+        </div>
+
+        <div class="content">
+            <h3>Welcome!</h3>
+            <p>Manage your health records, track appointments, and stay updated with personalized treatment plans. Your
+                health, your priority!</p>
+            <a href="#book" class="btn"> Explore Dashboard <span class="fas fa-chevron-right"></span> </a>
+        </div>
+
+    </section>
+
+    <!-- home section ends -->
+
+
+    <!-- services section starts  -->
+
+    
+    <section class="services" id="services">
+
+        <h1 class="heading"> our <span>Medical Image Diagnosing</span> </h1>
+
+        
+            <!--<h2>Medical Image Diagnosing</h2>-->
+            <input type="file" id="uploadImage" accept="image/*">
+            <button onclick="diagnoseImage()">Diagnose</button>
+            <div id="diagnoseResult"></div>
+        </section>
+
+        </div>
+
+    </section>
+    
+
+    <!-- services section ends -->
+
+    <!-- about section starts  -->
+
+    <section class="about" id="about">
+
+        <h1 class="heading"> <span>Personalized</span> Recommendation </h1>
+
+        
+        <div class="container my-4" style="background: rgb(236, 228, 228); border-radius: 15px; padding: 40px;">
+            <form action="/predict" method="post">
+                <div class="form-group">
+                    <label for="symptoms" style="color: black;">Enter Symptoms:</label>
+                    <input type="text" class="form-control" id="symptoms" name="symptoms" placeholder="Enter symptoms such as itching, fatigue, aches" style="width: 100%; max-width: 600px;">
+                </div>
+        
+                <div id="transcription"></div>
+                
+                <br>
+                <button type="submit" class="btn btn-danger btn-lg" style="width: 100%; padding: 14px; margin-bottom: 5px;">Predict</button>
+            </form>
+        </div>
+        
+
+<!-- Results -->
+<h1 class="text-center my-4">AI System Results</h1>
+<div class="container">
+    <div class="result-container">
+        <button class="toggle-button bg-primary" data-bs-toggle="modal" data-bs-target="#diseaseModal">Disease</button>
+        <button class="toggle-button bg-info" data-bs-toggle="modal" data-bs-target="#descriptionModal">Description</button>
+        <button class="toggle-button bg-primary" data-bs-toggle="modal" data-bs-target="#precautionModal">Precaution</button>
+        <button class="toggle-button bg-info" data-bs-toggle="modal" data-bs-target="#medicationsModal">Medications</button>
+        <button class="toggle-button bg-primary" data-bs-toggle="modal" data-bs-target="#workoutsModal">Workouts</button>
+        <button class="toggle-button bg-info" data-bs-toggle="modal" data-bs-target="#dietsModal">Diets</button>
+    </div>
+</div>
+
+<!-- Modals -->
+<div class="modal fade" id="diseaseModal" tabindex="-1" aria-labelledby="diseaseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="diseaseModalLabel">Predicted Disease</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{ predicted_disease }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="descriptionModalLabel">Description</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{ dis_des }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="precautionModal" tabindex="-1" aria-labelledby="precautionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="precautionModalLabel">Precaution</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    {% for i in my_precautions %}
+                        <li>{{ i }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="medicationsModal" tabindex="-1" aria-labelledby="medicationsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="medicationsModalLabel">Medications</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    {% for i in medications %}
+                        <li>{{ i }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="workoutsModal" tabindex="-1" aria-labelledby="workoutsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="workoutsModalLabel">Workouts</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    {% for i in workout %}
+                        <li>{{ i }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="dietsModal" tabindex="-1" aria-labelledby="dietsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dietsModalLabel">Diets</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    {% for i in my_diet %}
+                        <li>{{ i }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const startSpeechRecognitionButton = document.getElementById('startSpeechRecognition');
+    const transcriptionDiv = document.getElementById('transcription');
+
+    startSpeechRecognitionButton.addEventListener('click', startSpeechRecognition);
+
+    function startSpeechRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+
+        recognition.lang = 'en-US';
+
+        recognition.onresult = function (event) {
+            const result = event.results[0][0].transcript;
+            transcriptionDiv.textContent = result;
+        };
+
+        recognition.onend = function () {
+            console.log('Speech recognition ended.');
+        };
+
+        recognition.start();
+    }
+</script>
+
+    <!-- doctors section starts  -->
+    <section class="doctors" id="doctors">
+
+        <h1 class="heading"> <span>Image</span> Enhancement </h1>
+        
+        <input type="file" id="enhanceImage" accept="image/*">
+        <button onclick="enhanceImage()">Enhance</button>
+    
+        <!-- New section for displaying the enhanced result and image -->
+        <div id="enhanceResult"></div>
+      
+    </section>
+    
+        
+
+
+    <!-- doctors section ends -->
+
+     <!-- booking section starts   -->
+
+     <section class="book" id="book">
+
+        <h1 class="heading"> <span>Dashboard</span> ! </h1>
+
+        <div class="row">
+
+            <div class="image">
+                <img src="image/book-img.svg" alt="">
+            </div>
+
+            <form id="patientForm">
+                <h3>Patient Details</h3>
+
+                <!-- Patient Name -->
+                <input type="text" placeholder="Patient Name" class="box" required>
+
+                <!-- Date of Birth -->
+                <input type="date" placeholder="Date of Birth" class="box" required>
+
+                <!-- Blood Group -->
+                <select class="box" required>
+                    <option value="" disabled selected>Select Blood Group</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                </select>
+
+                <!-- Phone Number -->
+                <input type="number" placeholder="Contact Number" class="box" required>
+
+                <!-- Email -->
+                <input type="email" placeholder="Email Address" class="box">
+
+                <!-- Any Present Disease -->
+                <textarea placeholder="Any Present Medical Condition" class="box" rows="4"></textarea>
+
+                <!-- Preferred Appointment Date -->
+                <input type="date" class="box" required>
+
+                <!-- Submit Button -->
+                <input type="button" onclick="submitForm()" value="Submit Details" class="btn">
+            </form>
+
+            <script>
+                function submitForm() {
+                    alert("Patient details submitted successfully!");
+                    // Add more functionality here if needed
+                }
+            </script>
+
+        </div>
+
+    </section>
+
+    <!-- booking section ends -->
+    <section class="review" id="review">
+
+        <h1 class="heading"> Doctor's <span>review</span> </h1>
+
+
+        <div class="swiper-container review-slider">
+
+            <div class="swiper-wrapper">
+
+                <div class="swiper-slide slide">
+                    <i class="fas fa-quote-right"></i>
+                    <div class="user">
+                        <img src="image/pic-1.png" alt="">
+                        <div class="user-info">
+                            <h3>Charlotte</h3>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"The AI's Grad-CAM feature makes diagnostics more transparent by showing exactly where the AI is
+                        focusing. It's helped me explain cases better to patients, improving trust and communication."
+                    </p>
+                </div>
+
+                <div class="swiper-slide slide">
+                    <i class="fas fa-quote-right"></i>
+                    <div class="user">
+                        <img src="image/pic-2.png" alt="">
+                        <div class="user-info">
+                            <h3>William Mason</h3>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"The real-time image enhancement tool has been a game changer, especially in cases where image
+                        quality was poor. It's saved time and improved diagnostic accuracy without the need for
+                        rescans."
+
+                    </p>
+                </div>
+
+                <div class="swiper-slide slide">
+                    <i class="fas fa-quote-right"></i>
+                    <div class="user">
+                        <img src="image/pic-3.png" alt="">
+                        <div class="user-info">
+                            <h3>Amelia Nora</h3>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"I love the predictive analytics dashboard. It provides valuable insights, especially in chronic
+                        cases, allowing me to anticipate complications and make more informed treatment decisions."</p>
+                </div>
+
+                <div class="swiper-slide slide">
+                    <i class="fas fa-quote-right"></i>
+                    <div class="user">
+                        <img src="image/pic-4.png" alt="">
+                        <div class="user-info">
+                            <h3>James Liam</h3>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"The personalized treatment recommendations are fantastic. While I rely on my experience, having
+                        AI-driven suggestions has opened up new treatment options I might not have considered."</p>
+                </div>
+
+                <div class="swiper-slide slide">
+                    <i class="fas fa-quote-right"></i>
+                    <div class="user">
+                        <img src="image/pic-5.png" alt="">
+                        <div class="user-info">
+                            <h3>Victoria Adeline</h3>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>The AI significantly speeds up routine case analysis, allowing me to dedicate more time to
+                        complex cases. It's made my workflow more efficient and reduced diagnostic errors."</p>
+                </div>
+
+                <div class="swiper-slide slide">
+                    <i class="fas fa-quote-right"></i>
+                    <div class="user">
+                        <img src="image/pic-6.png" alt="">
+                        <div class="user-info">
+                            <h3>Jack Mateo</h3>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit fugiat consequuntur repellendus
+                        aperiam deserunt nihil, corporis fugit voluptatibus voluptate totam neque illo placeat eius quis
+                        laborum aspernatur quibusdam. Ipsum, magni.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- review section ends -->
+
+    <!-- blogs section starts  -->
+
+    <section class="blogs" id="blogs">
+
+        <h1 class="heading"> our <span>blogs</span> </h1>
+
+        <div class="box-container">
+
+            <div class="box">
+                <div class="image">
+                    <img src="image/blog-1.jpg" alt="">
+                </div>
+                <div class="content">
+                    <div class="icon">
+                        <a> <i class="fas fa-calendar"></i> 14th April, 2021 </a>
+                        <a href="https://instagram.com/luqman_lk8"> <i class="fas fa-user"></i> by prof. dr. Luqman </a>
+                    </div>
+                    <h3>HEALTH ESSENTIALS</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, eius. Lorem ipsum dolor sit
+                        amet consectetur adipisicing elit. </p>
+                    <a href="https://health.clevelandclinic.org/" class="btn"> learn more <span
+                            class="fas fa-chevron-right"></span> </a>
+                </div>
+            </div>
+
+            <div class="box">
+                <div class="image">
+                    <img src="image/blog-2.jpg" alt="">
+                </div>
+                <div class="content">
+                    <div class="icon">
+                        <a> <i class="fas fa-calendar"></i> 17th august, 2021 </a>
+                        <a href="https://instagram.com/luqman_lk8"> <i class="fas fa-user"></i> by dr. william mason</a>
+                    </div>
+                    <h3>CARE AND COST</h3>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Provident, eius. Lorem ipsum dolor sit
+                        amet consectetur adipisicing elit. </p>
+                    <a href="https://careandcost.com/" class="btn"> learn more <span
+                            class="fas fa-chevron-right"></span> </a>
+                </div>
+            </div>
+
+            <div class="box">
+                <div class="image">
+                    <img src="image/blog-3.jpg" alt="">
+                </div>
+                <div class="content">
+                    <div class="icon">
+                        <a> <i class="fas fa-calendar"></i> 15th july, 2021 </a>
+                        <a href="#https://instagram.com/luqman_lk8"> <i class="fas fa-user"></i> by dr. amelia nora </a>
+                    </div>
+                    <h3>VITAL SIGNS</h3>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Provident, eius. Lorem ipsum dolor sit
+                        amet consectetur adipisicing elit. </p>
+                    <a href="https://www.modernhealthcare.com/vital-signs-healthcare-blog" class="btn"> learn more <span
+                            class="fas fa-chevron-right"></span> </a>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- blogs section ends -->
+
+    <!-- footer section starts  -->
+
+    <section class="footer">
+
+        <div class="box-container">
+
+            <div class="box">
+                <h3>quick links</h3>
+                <a href="#home"> <i class="fas fa-chevron-right"></i> home </a>
+                <a href="#services"> <i class="fas fa-chevron-right"></i> Medical Image Diagnosing </a>
+                <a href="#about"> <i class="fas fa-chevron-right"></i> Personalized Recommendation </a>
+                <a href="#doctors"> <i class="fas fa-chevron-right"></i> Image Enhancement </a>
+                <a href="#book"> <i class="fas fa-chevron-right"></i> book </a>
+                <a href="#review"> <i class="fas fa-chevron-right"></i> review </a>
+                <a href="#blogs"> <i class="fas fa-chevron-right"></i> blogs </a>
+            </div>
+
+            <div class="box">
+                <h3>our blogs</h3>
+                <a href="https://health.clevelandclinic.org/"> <i class="fas fa-chevron-right"></i> HEALTH
+                    ESSENTIALS</a>
+                <a href="https://careandcost.com/"> <i class="fas fa-chevron-right"></i> CARE AND COST </a>
+                <a href="https://www.modernhealthcare.com/vital-signs-healthcare-blog"> <i
+                        class="fas fa-chevron-right"></i> VITAL SIGNS </a>
+                <a href="https://www.himss.org/resources/healthcare-informatics"> <i class="fas fa-chevron-right"></i>
+                    HEALTHCARE INFORMATICS </a>
+                <a href="https://www.healthaffairs.org/blog"> <i class="fas fa-chevron-right"></i> HEALTH AFFAIRS BLOG
+                </a>
+                <a href="https://lifeinthefastlane.com/"> <i class="fas fa-chevron-right"></i> LIFE IN THE FAST LANE
+                </a>
+            </div>
+
+            <div class="box">
+                <h3>contact info</h3>
+                <a><i class="fas fa-phone"></i> +123-456-7890 </a>
+                <a><i class="fas fa-phone"></i> +62-813-8591-2298 </a>
+                <a href="mailto:luqmanfn17@gmail.com"> <i class="fas fa-envelope"></i>syifagh@gmail.com</a>
+                <a href="mailto:luqmandarmawan532@gmail.com"> <i class="fas fa-envelope"></i>luqmanfn17@gmail.com</a>
+                <a href="https://goo.gl/maps/x8hmMeecwDNYdHrUA"> <i class="fas fa-map-marker-alt"></i> Tangerang,
+                    Indonesia </a>
+            </div>
+
+            <div class="box">
+                <h3>follow us</h3>
+                <a href="https://facebook.com/luqman.darmawan.24"> <i class="fab fa-facebook-f"></i> facebook </a>
+                <a href="https://twitter.com/TheAlphaKnight"> <i class="fab fa-twitter"></i> twitter </a>
+                <a href="https://instagram.com/luqman_lk8"> <i class="fab fa-instagram"></i> instagram </a>
+                <a href="https://id.linkedin.com/"> <i class="fab fa-linkedin"></i> linkedin </a>
+            </div>
+
+        </div>
+
+        <div class="credit"> created by <span>Luqman Aprianto Darmawan</span> | all rights reserved </div>
+
+    </section>
+
+    <!-- footer section ends -->
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <!-- custom js file link  -->
+    <script src="js/script.js"></script>
+
+
+    <!-- Ketika Submit di klik,reset form,munculkan alert -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function myFunction() {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+
+                    cancelButton: 'btn btn-danger',
+                    confirmButton: 'btn btn-success',
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, make an appointment!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("myForm").reset();
+                    swalWithBootstrapButtons.fire(
+                        'Thank You!',
+                        'We have received your message',
+                        'success'
+                    )
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    document.getElementById("myForm").reset();
+                    swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your appointment has been cancelled',
+                        'error'
+                    )
+                }
+            })
+        }
+    </script>
+
+</body>
+
+</html>

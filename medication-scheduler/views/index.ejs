@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medication Scheduler</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Medication Scheduler</h1>
+    <button id="add-medicine-btn">Add Medicine</button>
+  </header>
+
+  <main>
+    <div id="medicine-list"></div>
+  </main>
+
+  <div id="modal" class="hidden">
+    <div class="modal-content">
+      <form id="medicine-form">
+        <h2>Add Medicine</h2>
+        <label for="name">Medicine Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="type">Medicine Type:</label>
+        <select id="type" name="type">
+          <option value="Tablet">Tablet</option>
+          <option value="Capsule">Capsule</option>
+          <option value="Syrup">Syrup</option>
+          <option value="Injection">Injection</option>
+        </select>
+
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" required>
+
+        <label for="dose">Dose:</label>
+        <input type="text" id="dose" name="dose" placeholder="e.g., 100g" required>
+
+        <label for="days">No. of Days:</label>
+        <input type="number" id="days" name="days" required>
+
+        <label for="schedule">When to Take:</label>
+        <select id="schedule" name="schedule">
+          <option value="Daily">Daily</option>
+          <option value="Twice a Day">Twice a Day</option>
+          <option value="Weekly Once">Weekly Once</option>
+          <option value="Custom">Custom</option>
+        </select>
+
+        <label for="times">Times to Intake:</label>
+        <div>
+          <input type="checkbox" id="morning" value="Morning" name="times">
+          <label for="morning">Morning</label>
+          <input type="checkbox" id="afternoon" value="Afternoon" name="times">
+          <label for="afternoon">Afternoon</label>
+          <input type="checkbox" id="evening" value="Evening" name="times">
+          <label for="evening">Evening</label>
+        </div>
+
+        <label for="meal">Before/After Meal:</label>
+        <select id="meal" name="meal">
+          <option value="Before">Before Meal</option>
+          <option value="After">After Meal</option>
+        </select>
+
+        <button type="submit">Add Medicine</button>
+        <button type="button" id="close-modal-btn">Close</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>

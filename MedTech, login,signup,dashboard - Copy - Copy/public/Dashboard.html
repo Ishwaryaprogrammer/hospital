@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="Dashboard.css">
+</head>
+<body>
+    <!-- Sidebar Section -->
+    <div class="sidebar">
+        <div class="admin-profile">
+            <img src="../image/elder.png" alt="Profile">
+            <h2 id="username">Loading...</h2>
+            <p id="email">Loading...</p>
+        </div>
+
+
+
+        <ul class="nav-links">
+            <li><a href="#sos">SOS Button</a></li>
+            <li><a href="#reminder">Medication Reminder</a></li>
+            <li><a href="#virtual">Virtual Meeting</a></li>
+            <li><a onclick="window.history.back()">Logout</a></li>
+
+        </ul>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="main-content">
+        <header>
+            <h1>Dashboard</h1>
+        </header>
+
+        <!-- Dashboard Cards Section -->
+        <section id="dashboard">
+            <div class="dashboard-cards">
+                <!-- SOS Button Card -->
+                <div class="dashboard-card" id="sos">
+                    <h3>SOS Button</h3>
+                    <p>Quickly alert for emergencies.</p>
+                    <button onclick="handleSOS()">Trigger SOS</button>
+                </div>
+
+                <!-- Medication Reminder Card -->
+                <div class="dashboard-card" id="reminder">
+                    <h3>Medication Reminder</h3>
+                    <p>Set and manage medication schedules.</p>
+                    <button onclick="window.location.href='pages/medicationmanagement.html'">Set Reminder</button>
+                </div>
+
+                <!-- Virtual Meeting Card -->
+                <div class="dashboard-card" id="meeting">
+                    <h3>Virtual Meeting</h3>
+                    <p>Connect with patients and colleagues.</p>
+                    <button onclick="startMeeting()">Join Meeting</button>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="dashboard.js"></script>
+    <script>
+        // JavaScript Functions for Buttons
+        // Fetch the user's email from sessionStorage
+
+
+        function handleSOS() {
+            alert("SOS Alert Triggered!");
+        }
+
+        function manageReminders() {
+            alert("Opening Medication Reminder Settings...");
+        }
+
+        function startMeeting() {
+            alert("Redirecting to Virtual Meeting Platform...");
+        }
+
+
+    </script>
+</body>
+</html>
